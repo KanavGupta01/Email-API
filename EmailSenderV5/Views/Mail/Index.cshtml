@@ -1,0 +1,282 @@
+﻿@model EmailSenderV5.Models.GetTemplates
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Welcome to CT University Management System</title>
+    </script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.1vw;
+            background: #EEF5F9;
+            letter-spacing: 0.1vw;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #6659F7;
+            height: 9vh;
+        }
+
+        .logo {
+            float: left;
+            margin-top: 0.5vh;
+            margin-left: 0.5vw;
+            height: 8vh;
+        }
+
+        .pfp {
+            float: right;
+            border-radius: 50%;
+            margin-top: 1.8vh;
+            margin-right: 1vw;
+            height: 5vh;
+        }
+
+        .toggle {
+            height: 9vh;
+        }
+
+            .toggle:hover {
+                cursor: pointer;
+                background-color: #5449cc;
+            }
+
+        .sidebar {
+            background: #273146;
+            width: fit-content;
+            height: 91vh;
+            text-decoration: none;
+            padding: 0;
+            float: left;
+            position: absolute;
+        }
+
+            .sidebar ul {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+                text-align: left;
+            }
+
+            .sidebar li {
+                color: rgb(205, 205, 205);
+                padding: 1vw;
+            }
+
+                .sidebar li:hover {
+                    background: #1d2535;
+                    cursor: pointer;
+                }
+
+        .title {
+            margin-right: auto;
+            margin-left: auto;
+            width: fit-content;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 95vw;
+            margin-left: auto;
+            margin-right: auto;
+            height: fit-content;
+            padding: 2vh;
+        }
+
+        .cardContent {
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form, .templatesLink {
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .templates {
+            float: right;
+        }
+
+        .form {
+            width: 70%;
+        }
+
+        form {
+            display: table;
+        }
+
+        p {
+            display: table-row;
+        }
+
+        label {
+            display: table-cell;
+            width: 30%;
+        }
+
+        input {
+            width: 70%;
+            display: table-cell;
+            font-size: 100%;
+        }
+
+        table {
+            margin-right: auto;
+            margin-left: auto;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding-left: 1vw;
+            padding-right: 1vw;
+        }
+
+        th {
+            font-size: 120%;
+        }
+
+        table,
+        th,
+        td,
+        tr {
+            border: 1px solid rgb(205, 205, 205);
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <img class="logo" src="http://erp.ctuniversity.in/assets/images/logo-icon.png" alt="">
+            <img class="pfp" src="http://erp.ctuniversity.in/EmployeeProfilePic/dummy-image.jpg" alt="">
+            <img class="toggle" onclick="togglenav()" src="~/Resources/bars.jpg" alt="" width="120" height="65">
+        </nav>
+
+        <nav id="sidebar" class="sidebar">
+            <ul>
+                <li>Dashboard</li>
+                <li>Academics</li>
+                <li>E-Resource Sharing</li>
+                <li>Grievance Portal</li>
+                <li>Residential Affairs</li>
+                <li>Security and Safety</li>
+                <li>Student Feedback</li>
+                <li>Student Registration Form</li>
+                <li>Student Welfare</li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="title">
+            <h2>Mail Sender</h2>
+        </div>
+
+        <div class="card">
+            <div class="cardContent">
+                <div class="form">
+                    <form id="myForm" method="post" action="@Url.Action("Send", "Mail")">
+                        <p>
+                            <label for="id">Choose template</label>
+                            <select name="id">
+                                @foreach (var template in Model.templates)
+                                {
+                                    <option value="@template.id">@template.name</option>
+                                }
+                            </select>
+                        </p>
+                        <br />
+                        <p>
+                            <label for="to">To</label>
+                            <input type="text" name="to" />
+                        </p>
+                        <br />
+                        <p>
+                            <label for="subject">Subject</label>
+                            <input type="text" name="subject" />
+                        </p>
+                        <br />
+                        <p>
+                            <label for="body">Body</label>
+                            <input type="text" id="message" name="body" />
+                        </p>
+                        <br />
+                        <br />
+                        <p>
+                            <label hidden></label>
+                            <input type="submit" />
+                        </p>
+                    </form>
+                </div>
+
+                <div class="templates">
+                    <table>
+                        <tr>
+                            <td>Template</td>
+                            <td>View</td>
+                        </tr>
+                        @foreach (var template in Model.templates)
+                        {
+                            <tr>
+                                <td>@template.name</td>
+                                <td><a href="@Url.Action("Template", "Mail", new { id = template.id})">View</a></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        document.getElementById("sidebar").style.display = "none";
+
+        function togglenav() {
+            if (document.getElementById("sidebar").style.display == "none") {
+                document.getElementById("sidebar").style.display = "block";
+            } else {
+                document.getElementById("sidebar").style.display = "none";
+            }
+
+        }
+
+        $("#myForm").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+            var url = form.attr('action');
+            tinymce.activeEditor.save();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                complete: function (data) {
+                    if (data.status == 202) {
+                        alert("Sent successfully");
+                    } else {
+                        alert("Error " + data.status + ", enter correct values and try again");
+                    }
+                }
+            });
+
+
+        });
+    </script>
+</body>
+
+</html>
